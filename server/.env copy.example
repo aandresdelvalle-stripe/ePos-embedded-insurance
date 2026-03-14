@@ -1,0 +1,8 @@
+# Stripe secret key (required for fetching products from Stripe catalog)
+STRIPE_SECRET_KEY=sk_test_...
+
+# Stripe Connect connected account ID (insurance company) for post-payment transfer
+# STRIPE_CONNECTED_ACCOUNT_ID=acct_...
+
+# Optional: port (default 8080)
+# PORT=8080

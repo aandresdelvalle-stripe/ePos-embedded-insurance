@@ -1,0 +1,137 @@
+.terminal-config {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-config__main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.terminal-config__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.terminal-config__config-code {
+  margin: 0 0 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.terminal-config__section {
+  margin-bottom: 1.5rem;
+}
+
+.terminal-config__heading {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.terminal-config__status {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.terminal-config__status--connected {
+  color: #059669;
+}
+
+.terminal-config__status--connecting {
+  color: var(--color-text-muted);
+}
+
+.terminal-config__status--not_connected {
+  color: var(--color-text-muted);
+}
+
+.terminal-config__offline {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: #b91c1c;
+}
+
+.terminal-config__reconnect-btn {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #635bff;
+  background: transparent;
+  border: 1px solid #635bff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.terminal-config__reconnect-btn:hover:not(:disabled) {
+  background: #635bff;
+  color: #fff;
+}
+
+.terminal-config__reconnect-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.terminal-config__hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.terminal-config__charge-btn {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #fff;
+  background: #635bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.terminal-config__charge-btn:hover:not(:disabled) {
+  background: #5851e6;
+}
+
+.terminal-config__charge-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.terminal-config__message {
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  border-radius: 8px;
+}
+
+.terminal-config__message--success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.terminal-config__message--error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.terminal-config__message--info {
+  background: var(--color-image-bg);
+  color: var(--color-text);
+}
