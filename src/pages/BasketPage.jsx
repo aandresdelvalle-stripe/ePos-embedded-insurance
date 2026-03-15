@@ -15,10 +15,11 @@ export default function BasketPage() {
   const [insuranceProduct, setInsuranceProduct] = useState(null)
   const [payMessage, setPayMessage] = useState(null)
   const [payStatus, setPayStatus] = useState('idle') // idle | charging | success | error
+  const [paymentBreakdown, setPaymentBreakdown] = useState(null) // { total, merchantAmount, insuranceAmount } after success
   const [readerDisconnected, setReaderDisconnected] = useState(false)
   const terminalRef = useRef(null)
 
-  const terminalUrl = terminalClient.getBaseUrl()
+  const apiBaseUrl = terminalClient.getBaseUrl()
 
   useEffect(() => {
     if (!apiClient.getBaseUrl()) return
@@ -90,8 +91,8 @@ export default function BasketPage() {
   }
 
   const handlePayInPerson = async () => {
-    if (!terminalUrl) {
-      setPayMessage('Terminal is not configured (VITE_TERMINAL_URL).')
+    if (!apiBaseUrl) {
+      setPayMessage('Terminal is not configured (set VITE_API_URL in .env).')
       setPayStatus('error')
       return
     }
@@ -155,14 +156,26 @@ export default function BasketPage() {
           await apiClient.transferToInsurance(paymentIntentId)
         } catch (transferErr) {
           setPayMessage(
-            'Thank you for your custom. Note: Insurance transfer could not be completed.'
+            transferErr?.message
+              ? `Thank you for your order. Insurance transfer failed: ${transferErr.message}`
+              : 'Thank you for your order. Insurance transfer could not be completed.'
           )
+          setPaymentBreakdown({
+            total,
+            merchantAmount: total - insuranceAmountPence / 100,
+            insuranceAmount: insuranceAmountPence / 100,
+          })
           setPayStatus('success')
           clearCart()
           return
         }
       }
 
+      setPaymentBreakdown({
+        total,
+        merchantAmount: total - insuranceAmountPence / 100,
+        insuranceAmount: insuranceAmountPence / 100,
+      })
       setPayStatus('success')
       setPayMessage('Thank you for your custom.')
       clearCart()
@@ -201,6 +214,42 @@ export default function BasketPage() {
               <p className="basket__thank-you" role="status">
                 Thank you for your custom.
               </p>
+              {paymentBreakdown && (
+                <div className="basket__breakdown" role="figure" aria-label="Payment split">
+                  <h3 className="basket__breakdown-title">Payment split</h3>
+                  <p className="basket__breakdown-total">
+                    Total charged: <strong>£{paymentBreakdown.total.toFixed(2)}</strong>
+                  </p>
+                  <div
+                    className="basket__breakdown-diagram"
+                    style={{
+                      '--merchant-ratio': paymentBreakdown.total > 0 ? paymentBreakdown.merchantAmount / paymentBreakdown.total : 1,
+                      '--insurance-ratio': paymentBreakdown.total > 0 ? paymentBreakdown.insuranceAmount / paymentBreakdown.total : 0,
+                    }}
+                  >
+                    <div className="basket__breakdown-segment basket__breakdown-segment--merchant">
+                      <span className="basket__breakdown-label">Main merchant account</span>
+                      <span className="basket__breakdown-value">£{paymentBreakdown.merchantAmount.toFixed(2)}</span>
+                    </div>
+                    {paymentBreakdown.insuranceAmount > 0 && (
+                      <div className="basket__breakdown-segment basket__breakdown-segment--insurance">
+                        <span className="basket__breakdown-label">Insurance connected account</span>
+                        <span className="basket__breakdown-value">£{paymentBreakdown.insuranceAmount.toFixed(2)}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="basket__breakdown-legend">
+                    <span className="basket__breakdown-legend-item basket__breakdown-legend-item--merchant">
+                      Merchant: £{paymentBreakdown.merchantAmount.toFixed(2)}
+                    </span>
+                    {paymentBreakdown.insuranceAmount > 0 && (
+                      <span className="basket__breakdown-legend-item basket__breakdown-legend-item--insurance">
+                        Insurance: £{paymentBreakdown.insuranceAmount.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
               <Link to="/" className="basket__back">
                 Continue shopping
               </Link>

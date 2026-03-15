@@ -31,6 +31,114 @@
   color: #065f46;
 }
 
+/* Payment split diagram (after successful payment) */
+.basket__breakdown {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.basket__breakdown-title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.basket__breakdown-total {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.basket__breakdown-total strong {
+  color: var(--color-text);
+}
+
+.basket__breakdown-diagram {
+  display: flex;
+  width: 100%;
+  min-height: 4rem;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.basket__breakdown-segment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  min-width: 0;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+.basket__breakdown-segment--merchant {
+  width: calc(var(--merchant-ratio, 1) * 100%);
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.basket__breakdown-segment--insurance {
+  width: calc(var(--insurance-ratio, 0) * 100%);
+  background: #d1fae5;
+  color: #047857;
+}
+
+.basket__breakdown-segment + .basket__breakdown-segment {
+  border-left: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.basket__breakdown-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.basket__breakdown-value {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.basket__breakdown-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.basket__breakdown-legend-item--merchant::before {
+  content: '';
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+  border-radius: 3px;
+  background: #e0f2fe;
+}
+
+.basket__breakdown-legend-item--insurance::before {
+  content: '';
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+  border-radius: 3px;
+  background: #d1fae5;
+}
+
 .basket__list {
   list-style: none;
   margin: 0 0 1.5rem;

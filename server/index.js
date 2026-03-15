@@ -1,5 +1,12 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import express from 'express'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+// Load server/.env then project root .env so STRIPE_CONNECTED_ACCOUNT_ID from root is available
+dotenv.config({ path: path.join(__dirname, '.env') })
+dotenv.config({ path: path.join(__dirname, '..', '.env') })
 import cors from 'cors'
 import Stripe from 'stripe'
 
@@ -99,6 +106,26 @@ app.get('/products/insurance', async (req, res) => {
   }
 })
 
+/** Stripe Terminal: create a connection token for the JS SDK. */
+app.post('/connection_token', express.json(), async (req, res) => {
+  if (!stripe) {
+    return res.status(503).json({
+      error: 'Stripe is not configured',
+      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+    })
+  }
+  try {
+    const connectionToken = await stripe.terminal.connectionTokens.create()
+    res.json({ secret: connectionToken.secret })
+  } catch (err) {
+    console.error('Connection token error:', err.message)
+    res.status(500).json({
+      error: 'Failed to create connection token',
+      message: err.message,
+    })
+  }
+})
+
 /** Create a PaymentIntent for terminal (basket) with metadata.insurance_amount for later transfer. */
 app.post('/create_payment_intent', express.json(), async (req, res) => {
   if (!stripe) {
@@ -152,6 +179,33 @@ app.post('/create_payment_intent', express.json(), async (req, res) => {
   }
 })
 
+/** Stripe Terminal: capture a PaymentIntent (for manual capture). */
+app.post('/capture_payment_intent', express.json(), async (req, res) => {
+  if (!stripe) {
+    return res.status(503).json({
+      error: 'Stripe is not configured',
+      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+    })
+  }
+  const { payment_intent_id: paymentIntentId } = req.body
+  if (!paymentIntentId) {
+    return res.status(400).json({
+      error: 'Bad request',
+      message: 'payment_intent_id is required.',
+    })
+  }
+  try {
+    await stripe.paymentIntents.capture(paymentIntentId)
+    res.json({ success: true })
+  } catch (err) {
+    console.error('Capture payment intent error:', err.message)
+    res.status(500).json({
+      error: 'Failed to capture payment intent',
+      message: err.message,
+    })
+  }
+})
+
 /** Transfer the insurance portion to the connected account. Amount is read from PaymentIntent metadata.insurance_amount. */
 app.post('/transfer-to-insurance', express.json(), async (req, res) => {
   const connectedAccountId = process.env.STRIPE_CONNECTED_ACCOUNT_ID
@@ -185,8 +239,9 @@ app.post('/transfer-to-insurance', express.json(), async (req, res) => {
       return res.json({ success: true, transferred: false, message: 'No insurance amount in PaymentIntent metadata.' })
     }
 
-    const chargeId = paymentIntent.latest_charge
-    if (!chargeId || typeof chargeId !== 'string') {
+    const rawCharge = paymentIntent.latest_charge
+    const chargeId = typeof rawCharge === 'string' ? rawCharge : rawCharge?.id
+    if (!chargeId) {
       return res.status(400).json({
         error: 'Charge not available',
         message: 'PaymentIntent has no charge to transfer from.',
@@ -203,10 +258,13 @@ app.post('/transfer-to-insurance', express.json(), async (req, res) => {
 
     res.json({ success: true, transferred: true })
   } catch (err) {
-    console.error('Transfer to insurance error:', err.message)
+    const message = err.raw?.message ?? err.message
+    const code = err.raw?.code ?? err.code
+    console.error('Transfer to insurance error:', message, code ? `(${code})` : '')
     res.status(500).json({
       error: 'Transfer failed',
-      message: err.message,
+      message: message || 'Transfer failed',
+      code: code || undefined,
     })
   }
 })

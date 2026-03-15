@@ -11,7 +11,7 @@ export default function TerminalConfigPage() {
   const [message, setMessage] = useState('')
   const terminalRef = useRef(null)
 
-  const terminalUrl = terminalClient.getBaseUrl()
+  const apiBaseUrl = terminalClient.getBaseUrl()
   const readerId = import.meta.env.VITE_READER_ID || ''
   const locationId = import.meta.env.VITE_TERMINAL_LOCATION || ''
 
@@ -66,8 +66,8 @@ export default function TerminalConfigPage() {
   }
 
   useEffect(() => {
-    if (!terminalUrl) {
-      setMessage('Set VITE_TERMINAL_URL in .env to use the terminal.')
+    if (!apiBaseUrl) {
+      setMessage('Set VITE_API_URL in .env to use the terminal.')
       return
     }
 
@@ -104,7 +104,7 @@ export default function TerminalConfigPage() {
 
     initTerminal()
     return () => { cancelled = true }
-  }, [terminalUrl])
+  }, [apiBaseUrl])
 
   const handleCharge = async () => {
     const terminal = terminalRef.current
@@ -172,7 +172,7 @@ export default function TerminalConfigPage() {
               The reader has gone offline. Reconnect when it is available again.
             </p>
           )}
-          {connectionStatus !== 'connected' && terminalUrl && (
+          {connectionStatus !== 'connected' && apiBaseUrl && (
             <button
               type="button"
               className="terminal-config__reconnect-btn"
