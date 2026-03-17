@@ -17,12 +17,7 @@ export default function LandingPage() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    const baseUrl = apiClient.getBaseUrl()
-    if (!baseUrl) {
-      setLoading(false)
-      return
-    }
-
+    // When baseUrl is empty we use relative URLs (same origin), so the request still runs.
     apiClient
       .get('/products')
       .then((data) => {
