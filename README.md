@@ -52,6 +52,18 @@ React frontend and Node.js backend for the Stripe SWAG Shop.
 
 Run the server first, then the frontend, so the shop can load products from the API.
 
+## Deploy to Heroku
+
+You can deploy this app to Heroku in one click. First, push this repository to GitHub, then use the button below (replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repository name).
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/YOUR_USERNAME/YOUR_REPO)
+
+After clicking **Deploy**, Heroku will create an app and prompt you to set **Config Vars**. Set at least:
+
+- **STRIPE_SECRET_KEY** — your Stripe secret key (e.g. `sk_test_...` or `sk_live_...`)
+
+The frontend will use the deployed backend URL automatically when built on Heroku. If you need to point the frontend at a different API URL, set **VITE_API_URL** in Config Vars before deploying.
+
 ## Backend contract
 
 The app expects the backend to expose:
