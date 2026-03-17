@@ -3,7 +3,7 @@
   "description": "React frontend and Node.js backend for the Stripe SWAG Shop (ePOS embedded insurance).",
   "repository": "https://github.com/aandresdelvalle-stripe/ePos-embedded-insurance",
   "env": {
-    "STRIPE_SECRET_KEY": {
+    "STRIPE_TEST_SECRET_KEY": {
       "description": "Your Stripe secret key (e.g. sk_test_... or sk_live_...). Required for the server to load products from Stripe.",
       "required": true
     },
