@@ -1,0 +1,24 @@
+{
+  "name": "Stripe SWAG Shop",
+  "description": "React frontend and Node.js backend for the Stripe SWAG Shop (ePOS embedded insurance).",
+  "repository": "https://github.com/aandresdelvalle-stripe/ePos-embedded-insurance",
+  "env": {
+    "STRIPE_SECRET_KEY": {
+      "description": "Your Stripe secret key (e.g. sk_test_... or sk_live_...). Required for the server to load products from Stripe.",
+      "required": true
+    },
+    "VITE_API_URL": {
+      "description": "Backend API base URL for the frontend (no trailing slash). Leave blank to use the Heroku app URL.",
+      "required": false
+    },
+    "VITE_READER_ID": {
+      "description": "Stripe Terminal reader ID. Required for the frontend to connect to the terminal.",
+      "required": true
+    },
+    "STRIPE_CONNECTED_ACCOUNT_ID": { 
+      "description": "Stripe Connect connected account ID (insurance company) for post-payment transfer. Required for the server to transfer the insurance portion to the connected account.",
+      "required": true
+    }
+  }
+}
+
