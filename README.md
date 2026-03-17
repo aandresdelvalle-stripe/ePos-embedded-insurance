@@ -35,7 +35,7 @@ React frontend and Node.js backend for the Stripe SWAG Shop.
    cp server/.env.example server/.env
    ```
 
-   Edit `server/.env` and set `STRIPE_SECRET_KEY=sk_test_...`. The server uses this to load products from the Stripe product catalog. Only products whose metadata has `swag: true` are returned.
+   Edit `server/.env` and set `STRIPE_TEST_SECRET_KEY=sk_test_...`. The server uses this to load products from the Stripe product catalog. Only products whose metadata has `swag: true` are returned.
 
 ## Run
 
