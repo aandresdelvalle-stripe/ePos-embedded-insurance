@@ -56,7 +56,7 @@ Run the server first, then the frontend, so the shop can load products from the 
 
 You can deploy this app to Heroku in one click. First, push this repository to GitHub, then use the button below (replace `YOUR_USERNAME` and `YOUR_REPO` with your GitHub username and repository name).
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/YOUR_USERNAME/YOUR_REPO)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/aandresdelvalle-stripe/ePos-embedded-insurance)
 
 After clicking **Deploy**, Heroku will create an app and prompt you to set **Config Vars**. Set at least:
 
