@@ -9,7 +9,7 @@
     },
     "VITE_API_URL": {
       "description": "Backend API base URL for the frontend (no trailing slash). Leave blank to use the Heroku app URL.",
-      "required": false
+      "required": true
     },
     "VITE_READER_ID": {
       "description": "Stripe Terminal reader ID. Required for the frontend to connect to the terminal.",
