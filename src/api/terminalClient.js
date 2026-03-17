@@ -1,10 +1,11 @@
 /**
  * Client for Stripe Terminal endpoints on our backend (same API as apiClient).
  * Used for Stripe S700 reader: connection tokens, payment intents, capture.
+ * When VITE_API_URL is unset, returns '' so requests use relative URLs (same origin).
  */
 const getBaseUrl = () => {
   const url = import.meta.env.VITE_API_URL
-  if (!url) return ''
+  if (url == null || url === '') return ''
   return String(url).replace(/\/$/, '')
 }
 

@@ -1,14 +1,11 @@
 /**
  * Backend API client.
- * Base URL is read from .env: VITE_API_URL
+ * Base URL from .env: VITE_API_URL. When unset, returns '' so requests use relative URLs (same origin).
  */
 const getBaseUrl = () => {
   const url = import.meta.env.VITE_API_URL
-  if (!url) {
-    console.warn('VITE_API_URL is not set in .env')
-    return ''
-  }
-  return url.replace(/\/$/, '')
+  if (url == null || url === '') return ''
+  return String(url).replace(/\/$/, '')
 }
 
 export const apiClient = {

@@ -19,10 +19,8 @@ export default function BasketPage() {
   const [readerDisconnected, setReaderDisconnected] = useState(false)
   const terminalRef = useRef(null)
 
-  const apiBaseUrl = terminalClient.getBaseUrl()
-
   useEffect(() => {
-    if (!apiClient.getBaseUrl()) return
+    // Empty baseUrl is valid: requests use relative URLs (same origin).
     apiClient.getInsuranceProduct().then(setInsuranceProduct).catch(() => setInsuranceProduct(null))
   }, [])
 
@@ -91,11 +89,7 @@ export default function BasketPage() {
   }
 
   const handlePayInPerson = async () => {
-    if (!apiBaseUrl) {
-      setPayMessage('Terminal is not configured (set VITE_API_URL in .env).')
-      setPayStatus('error')
-      return
-    }
+    // Empty VITE_API_URL is valid in production (same-origin relative URLs).
     setPayMessage(null)
     setPayStatus('charging')
 
