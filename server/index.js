@@ -276,6 +276,13 @@ app.get('/health', (req, res) => {
   })
 })
 
+// Serve built frontend in production (e.g. Heroku)
+const distPath = path.join(__dirname, '..', 'dist')
+if (process.env.NODE_ENV !== 'development') {
+  app.use(express.static(distPath))
+  app.get('*', (req, res) => res.sendFile(path.join(distPath, 'index.html')))
+}
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
   if (!stripe) {
