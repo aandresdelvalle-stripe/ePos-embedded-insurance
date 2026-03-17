@@ -12,8 +12,8 @@ import Stripe from 'stripe'
 
 const app = express()
 const PORT = process.env.PORT ?? 8080
-const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY)
+const stripe = process.env.STRIPE_TEST_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_TEST_SECRET_KEY)
   : null
 
 app.use(cors())
@@ -23,7 +23,7 @@ app.get('/products', async (req, res) => {
   if (!stripe) {
     return res.status(503).json({
       error: 'Stripe is not configured',
-      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+      message: 'Set STRIPE_TEST_SECRET_KEY in the server environment.',
     })
   }
 
@@ -69,7 +69,7 @@ app.get('/products/insurance', async (req, res) => {
   if (!stripe) {
     return res.status(503).json({
       error: 'Stripe is not configured',
-      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+      message: 'Set STRIPE_TEST_SECRET_KEY in the server environment.',
     })
   }
 
@@ -111,7 +111,7 @@ app.post('/connection_token', express.json(), async (req, res) => {
   if (!stripe) {
     return res.status(503).json({
       error: 'Stripe is not configured',
-      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+      message: 'Set STRIPE_TEST_SECRET_KEY in the server environment.',
     })
   }
   try {
@@ -131,7 +131,7 @@ app.post('/create_payment_intent', express.json(), async (req, res) => {
   if (!stripe) {
     return res.status(503).json({
       error: 'Stripe is not configured',
-      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+      message: 'Set STRIPE_TEST_SECRET_KEY in the server environment.',
     })
   }
 
@@ -184,7 +184,7 @@ app.post('/capture_payment_intent', express.json(), async (req, res) => {
   if (!stripe) {
     return res.status(503).json({
       error: 'Stripe is not configured',
-      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+      message: 'Set STRIPE_TEST_SECRET_KEY in the server environment.',
     })
   }
   const { payment_intent_id: paymentIntentId } = req.body
@@ -212,7 +212,7 @@ app.post('/transfer-to-insurance', express.json(), async (req, res) => {
   if (!stripe) {
     return res.status(503).json({
       error: 'Stripe is not configured',
-      message: 'Set STRIPE_SECRET_KEY in the server environment.',
+      message: 'Set STRIPE_TEST_SECRET_KEY in the server environment.',
     })
   }
   if (!connectedAccountId) {
@@ -286,6 +286,6 @@ if (process.env.NODE_ENV !== 'development') {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)
   if (!stripe) {
-    console.warn('STRIPE_SECRET_KEY is not set; GET /products will return 503.')
+    console.warn('STRIPE_TEST_SECRET_KEY is not set; GET /products will return 503.')
   }
 })
